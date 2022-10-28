@@ -27,9 +27,10 @@ public class Sesion2410 {
                 "dayer.torres@gmail.com");
         listaU.agregar("maria", "546", "María E", "Martinez",
                 "mari@uca.edu.ni");
+         
+        FrmLogin login =new FrmLogin(listaU);
+       
         
-        FrmLogin login =new FrmLogin();
-        login.lista = listaU;
         login.setVisible(true);
     }
     

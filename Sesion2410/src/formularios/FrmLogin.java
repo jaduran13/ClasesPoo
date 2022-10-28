@@ -12,13 +12,20 @@ import javax.swing.JOptionPane;
  * @author Administrador
  */
 public class FrmLogin extends javax.swing.JFrame {
-    public DUsuario lista = new DUsuario();
+    private DUsuario lista = new DUsuario();
 
     /**
      * Creates new form FrmLogin
      */
     public FrmLogin() {
         initComponents();
+        
+    }
+    
+    public FrmLogin(DUsuario lista){
+        initComponents();
+        this.lista = lista;
+        
     }
 
     /**
@@ -35,7 +42,7 @@ public class FrmLogin extends javax.swing.JFrame {
         jPfPw = new javax.swing.JPasswordField();
         jBtnOk = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 204)), "Login", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 24), new java.awt.Color(0, 51, 255))); // NOI18N
 
@@ -115,8 +122,9 @@ public class FrmLogin extends javax.swing.JFrame {
         String user = this.jTfUser.getText();
         String pw =String.valueOf(this.jPfPw.getPassword());
         if(lista.buscarUsuario(user, pw)){
-            JOptionPane.showMessageDialog(this, 
-                    "Bienvenido");
+            FrmMenu menu = new FrmMenu(lista);
+            menu.setVisible(true);
+            dispose();
         }else{
             JOptionPane.showMessageDialog(this, 
                     "Error");
@@ -184,4 +192,14 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPfPw;
     private javax.swing.JTextField jTfUser;
     // End of variables declaration//GEN-END:variables
+
+    public DUsuario getLista() {
+        return lista;
+    }
+
+    public void setLista(DUsuario lista) {
+        this.lista = lista;
+    }
+
+    
 }
