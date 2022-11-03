@@ -212,6 +212,7 @@ public class FrmUsuario extends javax.swing.JInternalFrame {
             lista.agregar(userName, pw, nom, ape, ema);
             limpiar();
             this.jTblRegistro.setModel(llenarTabla());
+            this.jTabbedPane1.setSelectedIndex(1);
         } catch (Exception ex) {
             System.out.println("error");
         }
@@ -279,6 +280,7 @@ public class FrmUsuario extends javax.swing.JInternalFrame {
         this.jTfNombres.setText("");
         this.jTfApellidos.setText("");
         this.jTfEmail.setText("");
+        this.jTabbedPane1.setSelectedIndex(0);
 
     }
 
