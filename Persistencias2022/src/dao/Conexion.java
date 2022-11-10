@@ -16,9 +16,10 @@ public class Conexion {
     private static Conexion conx = null;
     //atributos
     private static Connection con = null;
-    private static String url = "jdbc:sqlserver://localhost;databaseName=hr;Persist Security Info=True;";
+    private static String url = "jdbc:sqlserver://localhost;databaseName="
+            + "DBUCA;Persist Security Info=True;";
     private static String user = "sa";
-    private static String password = "Egonzalez87";
+    private static String password = "123";
     
     //constructor
     private Conexion() {
@@ -57,7 +58,8 @@ public class Conexion {
             }                 
         }
         catch(Exception e){
-            System.out.println("Error al consultar el estado de la conexion: "+e.getMessage());
+            System.out.println("Error al consultar el estado de la conexion: "
+                    +e.getMessage());
         }
         return resp;
     }
@@ -92,17 +94,5 @@ public class Conexion {
         }
     }
    
-    public static void main(String args[])
-    {
-          
-        //new Conexion().getConnection();
-        /*
-        Conexion con = new Conexion();
-        Connection cn = con.getConnection();
-        con.closeConexion(cn);
-        */
-        
-            
-    }
-
+   
 }
