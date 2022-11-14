@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dao;
+package datos;
 
 /**
  *
@@ -16,17 +16,18 @@ public class Conexion {
     private static Conexion conx = null;
     //atributos
     private static Connection con = null;
-    private static final String URL = "jdbc:sqlserver://localhost;databaseName="
-            + "DBUCA;Persist Security Info=True;";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "123";
+    private static String url = "jdbc:sqlserver://localhost;"
+            + "databaseName=BDBooks;"
+            + "Persist Security Info=True;";
+    private static String user = "sa";
+    private static String password = "123";
     
     //constructor
     private Conexion() {
         
     }
     
-    public static Conexion getInstance(){
+    public static Conexion obtInstancia(){
         //instanciamos la unica instancia de Conexion
         if(conx==null){
             conx = new Conexion();
@@ -37,7 +38,7 @@ public class Conexion {
     
     
     //metodos
-    public static Connection getConnection() {	
+    public static Connection obtConexion() {	
         if (estaConectado()==false) {
             Conexion.crearConexion();
             
@@ -53,8 +54,7 @@ public class Conexion {
             resp = !((con==null) || (con.isClosed()));                 
         }
         catch(Exception e){
-            System.out.println("Error al consultar el estado de la conexion: "
-                    +e.getMessage());
+            System.out.println("Error al consultar el estado de la conexion: "+e.getMessage());
         }
         return resp;
     }
@@ -63,8 +63,8 @@ public class Conexion {
     {
         try {
            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-           con= DriverManager.getConnection(URL, USER, PASSWORD);
-           
+           con= DriverManager.getConnection(url, user, password);
+           System.out.println("Se conectó a la BD hr");
         } 
         catch (ClassNotFoundException e) {
            con=null;
@@ -77,7 +77,7 @@ public class Conexion {
     }
     
     @SuppressWarnings("CallToPrintStackTrace")
-    public static void closeConexion(Connection con){
+    public static void cerrarConexion(Connection con){
         if(estaConectado()!=false){
             try{
                 con.close();
@@ -89,5 +89,6 @@ public class Conexion {
         }
     }
    
-   
+
+
 }
