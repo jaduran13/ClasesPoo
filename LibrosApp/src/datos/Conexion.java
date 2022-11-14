@@ -64,7 +64,6 @@ public class Conexion {
         try {
            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
            con= DriverManager.getConnection(url, user, password);
-           System.out.println("Se conectó a la BD hr");
         } 
         catch (ClassNotFoundException e) {
            con=null;
@@ -81,7 +80,6 @@ public class Conexion {
         if(estaConectado()!=false){
             try{
                 con.close();
-                System.out.println("Cerrando la conexion");
             }catch(SQLException e){
                 e.printStackTrace();
                 System.out.println("Error al cerrar la conexion: "+e.getMessage());

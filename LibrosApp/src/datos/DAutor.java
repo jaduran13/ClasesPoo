@@ -73,7 +73,7 @@ public class DAutor {
     }
 
     public boolean guardarAutor(Autor a) {
-        boolean guardado = true;
+        boolean guardado = false;
         this.obtRegistros();
         try {
             rs.moveToInsertRow();
@@ -112,6 +112,7 @@ public class DAutor {
             while (rs.next()) {
                 if (rs.getInt("AuthorID") == id) {
                     resp = true;
+                    break;
                 }
             }
         } catch (SQLException ex) {
