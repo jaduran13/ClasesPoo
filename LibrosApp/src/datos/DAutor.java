@@ -33,7 +33,7 @@ public class DAutor {
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE,
                     ResultSet.HOLD_CURSORS_OVER_COMMIT);
-
+            rs = ps.executeQuery();
         } catch (SQLException ex) {
             System.out.println("Error al obtener registros:" + ex.getMessage());
         }
@@ -77,8 +77,8 @@ public class DAutor {
         this.obtRegistros();
         try {
             rs.moveToInsertRow();
-            rs.updateString("FirstName", a.getFirstName());
-            rs.updateString("LastName", a.getLastName());
+            rs.updateString("Firstname", a.getFirstName());
+            rs.updateString("Lastname", a.getLastName());
             rs.insertRow();
             rs.moveToCurrentRow();
             guardado = true;

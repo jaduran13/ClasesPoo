@@ -17,7 +17,7 @@ public class Conexion {
     //atributos
     private static Connection con = null;
     private static String url = "jdbc:sqlserver://localhost;"
-            + "databaseName=BDBooks;"
+            + "databaseName=BDLibros;"
             + "Persist Security Info=True;";
     private static String user = "sa";
     private static String password = "123";

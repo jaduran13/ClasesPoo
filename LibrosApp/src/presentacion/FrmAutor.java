@@ -4,17 +4,35 @@
  */
 package presentacion;
 
+import datos.DAutor;
+import entidades.Autor;
+import java.awt.HeadlessException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author Administrador
  */
 public class FrmAutor extends javax.swing.JFrame {
+    private int id; 
+    private DAutor dAutor = new DAutor();
+    private ArrayList<Autor> lista = new ArrayList<>();
     
+    //Declaramos un filtro de datos para la tabla
+    TableRowSorter trsFiltro;
+
     /**
      * Creates new form FrmAutor
      */
     public FrmAutor() {
         initComponents();
+        this.llenarTabla();
     }
 
     /**
@@ -26,7 +44,7 @@ public class FrmAutor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        TbPanel = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -40,6 +58,8 @@ public class FrmAutor extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TblRegistros = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        TfDato = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,6 +97,11 @@ public class FrmAutor extends javax.swing.JFrame {
         BtnEditar.setFocusable(false);
         BtnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BtnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BtnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEditarActionPerformed(evt);
+            }
+        });
         jToolBar2.add(BtnEditar);
 
         BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentacion/iconos/eliminar.png"))); // NOI18N
@@ -117,7 +142,7 @@ public class FrmAutor extends javax.swing.JFrame {
                 .addContainerGap(176, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Datos", jPanel1);
+        TbPanel.addTab("Datos", jPanel1);
 
         TblRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -127,7 +152,23 @@ public class FrmAutor extends javax.swing.JFrame {
 
             }
         ));
+        TblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TblRegistrosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TblRegistros);
+
+        jLabel3.setText("Buscar:");
+
+        TfDato.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TfDatoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TfDatoKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -135,18 +176,27 @@ public class FrmAutor extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TfDato)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(TfDato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Registros", jPanel2);
+        TbPanel.addTab("Registros", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,14 +204,14 @@ public class FrmAutor extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(TbPanel)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(TbPanel)
                 .addContainerGap())
         );
 
@@ -171,26 +221,116 @@ public class FrmAutor extends javax.swing.JFrame {
     private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
         // TODO add your handling code here:
         limpiar();
+        TbPanel.setSelectedIndex(0);
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
         // TODO add your handling code here:
-        try{
-            
-        }catch(Exception ex){
-            System.out.println("Error al intentar guardar: "+ ex.getMessage());
+        try {
+            Autor a = new Autor(0,
+                    TfNombres.getText(),
+                    TfApellidos.getText()
+            );
+            if (dAutor.guardarAutor(a)) {
+                JOptionPane.showMessageDialog(this, "Registro Guardado.",
+                        "Autor", JOptionPane.INFORMATION_MESSAGE);
+                llenarTabla();
+                TbPanel.setSelectedIndex(1);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al guardar",
+                        "Autor", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (HeadlessException ex) {
+            System.out.println("Error al intentar guardar: " + ex.getMessage());
         }
-        
-        
+
+
     }//GEN-LAST:event_BtnGuardarActionPerformed
 
-    private void limpiar(){
+    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
+        // TODO add your handling code here:
+        Autor a = new Autor(
+                id,
+                TfNombres.getText(),
+                TfApellidos.getText()
+        );
+        if (dAutor.editarAutor(a)) {
+            JOptionPane.showMessageDialog(this, "Registro Editado.",
+                    "Autor", JOptionPane.INFORMATION_MESSAGE);
+            llenarTabla();
+            TbPanel.setSelectedIndex(1);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al editar",
+                    "Autor", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_BtnEditarActionPerformed
+
+    private void TblRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblRegistrosMouseClicked
+        // TODO add your handling code here:
+        int fila = TblRegistros.getSelectedRow();
+        id = lista.get(fila).getAuthorID();
+        TfNombres.setText(lista.get(fila).getFirstName());
+        TfApellidos.setText(lista.get(fila).getLastName());
+        TbPanel.setSelectedIndex(0);
+        BtnGuardar.setEnabled(false);
+        BtnEditar.setEnabled(true);
+        BtnEliminar.setEnabled(true);
+        TfNombres.requestFocus();
+    }//GEN-LAST:event_TblRegistrosMouseClicked
+
+    private void TfDatoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TfDatoKeyReleased
+        // TODO add your handling code here:
+        filtrarTabla();
+        trsFiltro = new TableRowSorter(TblRegistros.getModel());
+        TblRegistros.setRowSorter(trsFiltro);
+    }//GEN-LAST:event_TfDatoKeyReleased
+
+    private void TfDatoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TfDatoKeyTyped
+        // TODO add your handling code here:
+        TfDato.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(final KeyEvent e){
+                filtrarTabla();
+            }
+        });
+        trsFiltro = new TableRowSorter(TblRegistros.getModel());
+        TblRegistros.setRowSorter(trsFiltro);
+    }//GEN-LAST:event_TfDatoKeyTyped
+
+    private void limpiar() {
         TfNombres.setText("");
         TfApellidos.setText("");
         BtnGuardar.setEnabled(true);
         BtnEditar.setEnabled(false);
         BtnEliminar.setEnabled(false);
     }
+
+    private void llenarArrayList() {
+        if (!lista.isEmpty()) {
+            lista.clear();
+        }
+        lista = dAutor.listarAutor();
+    }
+
+    private void llenarTabla() {
+        llenarArrayList();
+        DefaultTableModel dtm = new DefaultTableModel();
+        String titulos[] = {"Nombres", "Apellidos"};
+        dtm.setColumnIdentifiers(titulos);
+        for (Autor a : lista) {
+            Object[] fila = new Object[]{
+                a.getFirstName(),
+                a.getLastName()
+            };
+            dtm.addRow(fila);
+        }
+        this.TblRegistros.setModel(dtm);
+    }
+    
+    private void filtrarTabla(){
+       trsFiltro.setRowFilter(RowFilter.regexFilter(TfDato.getText(), 0));
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -231,15 +371,17 @@ public class FrmAutor extends javax.swing.JFrame {
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JButton BtnNuevo;
+    private javax.swing.JTabbedPane TbPanel;
     private javax.swing.JTable TblRegistros;
     private javax.swing.JTextField TfApellidos;
+    private javax.swing.JTextField TfDato;
     private javax.swing.JTextField TfNombres;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JToolBar jToolBar2;
     // End of variables declaration//GEN-END:variables
 }
