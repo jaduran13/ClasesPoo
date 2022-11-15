@@ -4,6 +4,8 @@
  */
 package librosapp;
 
+import presentacion.FrmAutor;
+
 /**
  *
  * @author jadg1
@@ -15,6 +17,8 @@ public class LibrosApp {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        FrmAutor frm = new FrmAutor();
+        frm.setVisible(true);
     }
     
 }

@@ -20,10 +20,11 @@ import javax.swing.table.TableRowSorter;
  * @author Administrador
  */
 public class FrmAutor extends javax.swing.JFrame {
-    private int id; 
+
+    private int id;
     private DAutor dAutor = new DAutor();
     private ArrayList<Autor> lista = new ArrayList<>();
-    
+
     //Declaramos un filtro de datos para la tabla
     TableRowSorter trsFiltro;
 
@@ -62,6 +63,7 @@ public class FrmAutor extends javax.swing.JFrame {
         TfDato = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Autor");
 
         jLabel1.setText("Nombres:");
 
@@ -109,6 +111,11 @@ public class FrmAutor extends javax.swing.JFrame {
         BtnEliminar.setFocusable(false);
         BtnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BtnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEliminarActionPerformed(evt);
+            }
+        });
         jToolBar2.add(BtnEliminar);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -152,6 +159,7 @@ public class FrmAutor extends javax.swing.JFrame {
 
             }
         ));
+        TblRegistros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         TblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TblRegistrosMouseClicked(evt);
@@ -226,6 +234,7 @@ public class FrmAutor extends javax.swing.JFrame {
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
         // TODO add your handling code here:
+        this.verificarDatosVacios();
         try {
             Autor a = new Autor(0,
                     TfNombres.getText(),
@@ -249,6 +258,7 @@ public class FrmAutor extends javax.swing.JFrame {
 
     private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
         // TODO add your handling code here:
+        this.verificarDatosVacios();
         Autor a = new Autor(
                 id,
                 TfNombres.getText(),
@@ -267,15 +277,15 @@ public class FrmAutor extends javax.swing.JFrame {
 
     private void TblRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblRegistrosMouseClicked
         // TODO add your handling code here:
-        int fila = TblRegistros.getSelectedRow();
-        id = lista.get(fila).getAuthorID();
-        TfNombres.setText(lista.get(fila).getFirstName());
-        TfApellidos.setText(lista.get(fila).getLastName());
-        TbPanel.setSelectedIndex(0);
-        BtnGuardar.setEnabled(false);
-        BtnEditar.setEnabled(true);
-        BtnEliminar.setEnabled(true);
-        TfNombres.requestFocus();
+        TblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    ubicarDatos();
+                }
+            }
+        });
+
     }//GEN-LAST:event_TblRegistrosMouseClicked
 
     private void TfDatoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TfDatoKeyReleased
@@ -289,13 +299,30 @@ public class FrmAutor extends javax.swing.JFrame {
         // TODO add your handling code here:
         TfDato.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(final KeyEvent e){
+            public void keyReleased(final KeyEvent e) {
                 filtrarTabla();
             }
         });
         trsFiltro = new TableRowSorter(TblRegistros.getModel());
         TblRegistros.setRowSorter(trsFiltro);
     }//GEN-LAST:event_TfDatoKeyTyped
+
+    private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
+        // TODO add your handling code here:
+        this.verificarDatosVacios();
+        int resp = JOptionPane.showConfirmDialog(this, "¿Desea eliminar este registro?",
+                "Autor", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (resp == 0) {
+            if (dAutor.eliminarAutor(id)) {
+                JOptionPane.showMessageDialog(this, "Registro eliminado satisfactoriamente",
+                        "Autor", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al eliminar.", "Autor",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        llenarTabla();
+    }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void limpiar() {
         TfNombres.setText("");
@@ -314,7 +341,13 @@ public class FrmAutor extends javax.swing.JFrame {
 
     private void llenarTabla() {
         llenarArrayList();
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
         String titulos[] = {"Nombres", "Apellidos"};
         dtm.setColumnIdentifiers(titulos);
         for (Autor a : lista) {
@@ -325,10 +358,38 @@ public class FrmAutor extends javax.swing.JFrame {
             dtm.addRow(fila);
         }
         this.TblRegistros.setModel(dtm);
+
     }
-    
-    private void filtrarTabla(){
-       trsFiltro.setRowFilter(RowFilter.regexFilter(TfDato.getText(), 0));
+
+    private void filtrarTabla() {
+        trsFiltro.setRowFilter(RowFilter.regexFilter(TfDato.getText(), 0));
+    }
+
+    private void ubicarDatos() {
+        int fila = TblRegistros.getSelectedRow();
+        id = lista.get(fila).getAuthorID();
+        TfNombres.setText(lista.get(fila).getFirstName());
+        TfApellidos.setText(lista.get(fila).getLastName());
+        TbPanel.setSelectedIndex(0);
+        BtnGuardar.setEnabled(false);
+        BtnEditar.setEnabled(true);
+        BtnEliminar.setEnabled(true);
+        TfNombres.requestFocus();
+    }
+
+    private void verificarDatosVacios() {
+        if (TfNombres.getText().equals("") || TfNombres.getText().length() == 0) {
+            JOptionPane.showMessageDialog(this, "Por favor verifique que los nombres"
+                    + " no esten vacío.", "Autor",
+                    JOptionPane.WARNING_MESSAGE);
+            TfNombres.requestFocus();
+        }
+        if (TfApellidos.getText().equals("") || TfApellidos.getText().length() == 0) {
+            JOptionPane.showMessageDialog(this, "Por favor verifique los apellidos"
+                    + " no esten vacíos.", "Autor",
+                    JOptionPane.WARNING_MESSAGE);
+            TfApellidos.requestFocus();
+        }
     }
 
     /**
