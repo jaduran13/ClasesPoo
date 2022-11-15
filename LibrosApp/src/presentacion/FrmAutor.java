@@ -21,7 +21,7 @@ import javax.swing.table.TableRowSorter;
  */
 public class FrmAutor extends javax.swing.JFrame {
 
-    private int id;
+    private int id = 0;
     private DAutor dAutor = new DAutor();
     private ArrayList<Autor> lista = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class FrmAutor extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         TfNombres = new javax.swing.JTextField();
         TfApellidos = new javax.swing.JTextField();
-        jToolBar2 = new javax.swing.JToolBar();
+        TbComados = new javax.swing.JToolBar();
         BtnNuevo = new javax.swing.JButton();
         BtnGuardar = new javax.swing.JButton();
         BtnEditar = new javax.swing.JButton();
@@ -61,6 +61,7 @@ public class FrmAutor extends javax.swing.JFrame {
         TblRegistros = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         TfDato = new javax.swing.JTextField();
+        CmbFiltro = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Autor");
@@ -69,7 +70,7 @@ public class FrmAutor extends javax.swing.JFrame {
 
         jLabel2.setText("Apellidos:");
 
-        jToolBar2.setRollover(true);
+        TbComados.setRollover(true);
 
         BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentacion/iconos/nuevo.png"))); // NOI18N
         BtnNuevo.setToolTipText("Nuevo");
@@ -81,7 +82,7 @@ public class FrmAutor extends javax.swing.JFrame {
                 BtnNuevoActionPerformed(evt);
             }
         });
-        jToolBar2.add(BtnNuevo);
+        TbComados.add(BtnNuevo);
 
         BtnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentacion/iconos/guardar.png"))); // NOI18N
         BtnGuardar.setFocusable(false);
@@ -92,7 +93,7 @@ public class FrmAutor extends javax.swing.JFrame {
                 BtnGuardarActionPerformed(evt);
             }
         });
-        jToolBar2.add(BtnGuardar);
+        TbComados.add(BtnGuardar);
 
         BtnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentacion/iconos/editar.png"))); // NOI18N
         BtnEditar.setEnabled(false);
@@ -104,7 +105,7 @@ public class FrmAutor extends javax.swing.JFrame {
                 BtnEditarActionPerformed(evt);
             }
         });
-        jToolBar2.add(BtnEditar);
+        TbComados.add(BtnEditar);
 
         BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentacion/iconos/eliminar.png"))); // NOI18N
         BtnEliminar.setEnabled(false);
@@ -116,7 +117,7 @@ public class FrmAutor extends javax.swing.JFrame {
                 BtnEliminarActionPerformed(evt);
             }
         });
-        jToolBar2.add(BtnEliminar);
+        TbComados.add(BtnEliminar);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,12 +133,12 @@ public class FrmAutor extends javax.swing.JFrame {
                     .addComponent(TfNombres)
                     .addComponent(TfApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+            .addComponent(TbComados, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(TbComados, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
@@ -167,7 +168,7 @@ public class FrmAutor extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(TblRegistros);
 
-        jLabel3.setText("Buscar:");
+        jLabel3.setText("Buscar por:");
 
         TfDato.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -177,6 +178,8 @@ public class FrmAutor extends javax.swing.JFrame {
                 TfDatoKeyTyped(evt);
             }
         });
+
+        CmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Nombres", "Apellidos" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -189,7 +192,9 @@ public class FrmAutor extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TfDato)))
+                        .addComponent(CmbFiltro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TfDato, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -198,7 +203,8 @@ public class FrmAutor extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(TfDato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TfDato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -230,6 +236,7 @@ public class FrmAutor extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiar();
         TbPanel.setSelectedIndex(0);
+        TfNombres.requestFocus();
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
@@ -252,8 +259,6 @@ public class FrmAutor extends javax.swing.JFrame {
         } catch (HeadlessException ex) {
             System.out.println("Error al intentar guardar: " + ex.getMessage());
         }
-
-
     }//GEN-LAST:event_BtnGuardarActionPerformed
 
     private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
@@ -285,7 +290,6 @@ public class FrmAutor extends javax.swing.JFrame {
                 }
             }
         });
-
     }//GEN-LAST:event_TblRegistrosMouseClicked
 
     private void TfDatoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TfDatoKeyReleased
@@ -325,6 +329,7 @@ public class FrmAutor extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void limpiar() {
+        id = 0;
         TfNombres.setText("");
         TfApellidos.setText("");
         BtnGuardar.setEnabled(true);
@@ -347,29 +352,45 @@ public class FrmAutor extends javax.swing.JFrame {
                 return false;
             }
         };
-
-        String titulos[] = {"Nombres", "Apellidos"};
+        String titulos[] = {"Codigo", "Nombre completo"};
         dtm.setColumnIdentifiers(titulos);
         for (Autor a : lista) {
             Object[] fila = new Object[]{
-                a.getFirstName(),
-                a.getLastName()
+                a.getAuthorID(),
+                a.getFirstName() + " "+ a.getLastName()
             };
+            
             dtm.addRow(fila);
         }
         this.TblRegistros.setModel(dtm);
-
+        TblRegistros.getColumnModel().getColumn(0).setMaxWidth(0);
+        TblRegistros.getColumnModel().getColumn(0).setMinWidth(0);
+        TblRegistros.getColumnModel().getColumn(0).setPreferredWidth(0);
+        TblRegistros.getColumnModel().getColumn(0).setResizable(false);
+        
+        
     }
 
     private void filtrarTabla() {
-        trsFiltro.setRowFilter(RowFilter.regexFilter(TfDato.getText(), 0));
+        int columna = 0;
+        switch (CmbFiltro.getSelectedIndex()) {
+            case 0 -> columna = 0;
+            case 1 -> columna = 1;
+           // case 2 -> columna = 2;
+            default -> { columna = 0;
+            }
+        }
+        trsFiltro.setRowFilter(RowFilter.regexFilter(TfDato.getText(),
+                columna));
     }
 
     private void ubicarDatos() {
         int fila = TblRegistros.getSelectedRow();
-        id = lista.get(fila).getAuthorID();
-        TfNombres.setText(lista.get(fila).getFirstName());
-        TfApellidos.setText(lista.get(fila).getLastName());
+        id = Integer.parseInt(TblRegistros.getValueAt(fila, 0).toString());
+        Autor a = dAutor.buscarAutor(id);
+        TfNombres.setText(a.getFirstName());
+        TfApellidos.setText(a.getLastName());
+        
         TbPanel.setSelectedIndex(0);
         BtnGuardar.setEnabled(false);
         BtnEditar.setEnabled(true);
@@ -432,6 +453,8 @@ public class FrmAutor extends javax.swing.JFrame {
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JButton BtnNuevo;
+    private javax.swing.JComboBox<String> CmbFiltro;
+    private javax.swing.JToolBar TbComados;
     private javax.swing.JTabbedPane TbPanel;
     private javax.swing.JTable TblRegistros;
     private javax.swing.JTextField TfApellidos;
@@ -443,6 +466,5 @@ public class FrmAutor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JToolBar jToolBar2;
     // End of variables declaration//GEN-END:variables
 }

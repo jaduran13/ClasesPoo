@@ -200,4 +200,41 @@ public class DAutor {
         }   
         return resp;
     }
+    
+    public Autor buscarAutor(int id) {
+        Autor autor = new Autor();
+        this.obtRegistros();
+        try {
+            rs.beforeFirst();
+            while (rs.next()) {
+                if (rs.getInt("AuthorID") == id) {
+                    autor = new Autor(
+                            rs.getInt("AuthorID"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName")
+                    );
+                    break;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al buscar autor: " + ex.getMessage());
+        } 
+        finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    Conexion.cerrarConexion(conn);
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return autor;
+    }
+
 }
