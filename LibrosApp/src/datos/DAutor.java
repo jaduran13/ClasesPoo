@@ -10,15 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author jadg1
+ * @author POO
  */
 public class DAutor {
-
     //atributos
     private Connection conn = null;
     private PreparedStatement ps = null;
@@ -84,7 +81,8 @@ public class DAutor {
             guardado = true;
         } catch (SQLException ex) {
             System.out.println("Error al guardar autor: " + ex.getMessage());
-        } finally {
+        } 
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -117,16 +115,15 @@ public class DAutor {
             }
         } catch (SQLException ex) {
             System.out.println("Error al buscar autor: " + ex.getMessage());
-        } finally {
+        } 
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
                 }
-
                 if (ps != null) {
                     ps.close();
                 }
-
                 if (conn != null) {
                     Conexion.cerrarConexion(conn);
                 }
@@ -153,7 +150,8 @@ public class DAutor {
             }
         } catch (SQLException ex) {
             System.out.println("Error al editar: " + ex.getMessage());
-        } finally {
+        } 
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -168,7 +166,6 @@ public class DAutor {
                 System.out.println(ex.getMessage());
             }
         }
-
         return resp;
     }
     
@@ -185,7 +182,7 @@ public class DAutor {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAutor.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error al eliminar autor"+ ex.getMessage());
         }finally {
             try {
                 if (rs != null) {
@@ -200,11 +197,7 @@ public class DAutor {
             } catch (SQLException ex) {            
                 System.out.println(ex.getMessage());
             }
-        }
-        
+        }   
         return resp;
     }
-    
-    
-
 }

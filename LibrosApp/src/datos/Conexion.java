@@ -35,8 +35,6 @@ public class Conexion {
         return conx;
     }
      
-    
-    
     //metodos
     public static Connection obtConexion() {	
         if (estaConectado()==false) {
@@ -54,7 +52,8 @@ public class Conexion {
             resp = !((con==null) || (con.isClosed()));                 
         }
         catch(Exception e){
-            System.out.println("Error al consultar el estado de la conexion: "+e.getMessage());
+            System.out.println("Error al consultar el estado de la conexion: "
+                    +e.getMessage());
         }
         return resp;
     }
@@ -86,7 +85,5 @@ public class Conexion {
             }
         }
     }
-   
-
-
 }
+

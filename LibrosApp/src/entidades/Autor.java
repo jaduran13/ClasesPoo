@@ -1,7 +1,7 @@
 package entidades;
 
 /**
- * @author jadg1
+ * @author POO
  * @version 1.0
  * @created 13-nov.-2022 18:55:03
  */
@@ -50,5 +50,4 @@ public class Autor {
         return firstName + " " + lastName ;
     }
 
-    
 }//end Autor
